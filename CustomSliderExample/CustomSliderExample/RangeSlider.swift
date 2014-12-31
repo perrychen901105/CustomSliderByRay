@@ -17,8 +17,10 @@ class RangeSlider: UIControl {
     var upperValue = 0.8
     
     let trackLayer = CALayer()
-    let lowerThumbLayer = CALayer()
-    let upperThumbLayer = CALayer()
+    let lowerThumbLayer = RangeSliderThumbLayer()
+    let upperThumbLayer = RangeSliderThumbLayer()
+    
+    var previousLocation = CGPoint()
     
     var thumbWidth: CGFloat {
         return CGFloat(bounds.height)
@@ -35,6 +37,9 @@ class RangeSlider: UIControl {
         
         upperThumbLayer.backgroundColor = UIColor.greenColor().CGColor
         layer.addSublayer(upperThumbLayer)
+        
+        lowerThumbLayer.rangeSlider = self
+        upperThumbLayer.rangeSlider = self
         
         updateLayerFrames()
     }
@@ -73,6 +78,12 @@ class RangeSlider: UIControl {
             updateLayerFrames()
         }
     }
+    
+    /**
+    *  User Interaction
+    */
+    
+    
     
 }
 
