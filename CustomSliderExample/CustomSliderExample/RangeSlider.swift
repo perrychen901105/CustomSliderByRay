@@ -20,6 +20,10 @@ class RangeSlider: UIControl {
     let lowerThumbLayer = RangeSliderThumbLayer()
     let upperThumbLayer = RangeSliderThumbLayer()
     
+    
+    /*
+        to track the touch locations
+    */
     var previousLocation = CGPoint()
     
     var thumbWidth: CGFloat {
@@ -83,8 +87,21 @@ class RangeSlider: UIControl {
     *  User Interaction
     */
     
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+        previousLocation = touch.locationInView(self)
+        
+        // Hit test the thumb layers
+        if lowerThumbLayer.frame.contains(previousLocation) {
+            lowerThumbLayer.highlighted = true
+        } else if upperThumbLayer.frame.contains(previousLocation) {
+            upperThumbLayer.highlighted = true
+        }
+        
+        // inform the UIControl superclass whether subsequent touches should be tracked
+        return lowerThumbLayer.highlighted || upperThumbLayer.highlighted
+    }
     
-    
+    //TODO: add track methods
 }
 
 
