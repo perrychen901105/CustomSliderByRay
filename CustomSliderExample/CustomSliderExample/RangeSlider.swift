@@ -11,15 +11,60 @@ import QuartzCore
 
 class RangeSlider: UIControl {
 
-    var minimumValue = 0.0
-    var maximumValue = 1.0
-    var lowerValue = 0.2
-    var upperValue = 0.8
-    
-    let trackLayer = CALayer()
+    let trackLayer = RangeSliderTrackLayer()
     let lowerThumbLayer = RangeSliderThumbLayer()
     let upperThumbLayer = RangeSliderThumbLayer()
     
+    var minimumValue: Double = 0.0 {
+        didSet {
+            updateLayerFrames()
+        }
+    }
+    
+    var maximumValue: Double = 1.0 {
+        didSet {
+            updateLayerFrames()
+        }
+    }
+    
+    var lowerValue: Double = 0.2 {
+        didSet {
+            updateLayerFrames()
+        }
+    }
+    
+    var upperValue: Double = 0.8 {
+        didSet {
+            updateLayerFrames()
+        }
+    }
+    
+    var trackTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
+        didSet {
+            trackLayer.setNeedsDisplay()
+        }
+    }
+    
+    var trackHighlightTintColor: UIColor = UIColor(red: 0.0, green: 0.45, blue: 0.94, alpha: 1.0) {
+        didSet {
+            trackLayer.setNeedsDisplay()
+        }
+    }
+    
+    var thumbTintColor: UIColor = UIColor.whiteColor() {
+        didSet {
+            lowerThumbLayer.setNeedsDisplay()
+            upperThumbLayer.setNeedsDisplay()
+        }
+    }
+    
+    var curvaceousness: CGFloat = 1.0 {
+        didSet {
+            trackLayer.setNeedsDisplay()
+            lowerThumbLayer.setNeedsDisplay()
+            upperThumbLayer.setNeedsDisplay()
+        }
+    }
     
     /*
         to track the touch locations
@@ -33,36 +78,47 @@ class RangeSlider: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        trackLayer.backgroundColor = UIColor.blueColor().CGColor
+        trackLayer.rangeSlider = self
+        trackLayer.contentsScale = UIScreen.mainScreen().scale
         layer.addSublayer(trackLayer)
         
-        lowerThumbLayer.backgroundColor = UIColor.greenColor().CGColor
+        lowerThumbLayer.rangeSlider = self
+        lowerThumbLayer.contentsScale = UIScreen.mainScreen().scale
         layer.addSublayer(lowerThumbLayer)
         
-        upperThumbLayer.backgroundColor = UIColor.greenColor().CGColor
-        layer.addSublayer(upperThumbLayer)
-        
-        lowerThumbLayer.rangeSlider = self
         upperThumbLayer.rangeSlider = self
-        
-        updateLayerFrames()
+        upperThumbLayer.contentsScale = UIScreen.mainScreen().scale
+        layer.addSublayer(upperThumbLayer)
     }
-    
-    required init(coder: NSCoder){
+
+    required init(coder: NSCoder) {
         super.init(coder: coder)
     }
     
+//    override init(frame: CGRect) {
+//
+//        
+//        updateLayerFrames()
+//    }
+    
+//    required init(coder: NSCoder){
+//        super.init(coder: coder)
+//    }
+    
     func updateLayerFrames() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
         trackLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
-        trackLayer.setNeedsLayout()
+        trackLayer.setNeedsDisplay()
         
         let lowerThumbCenter = CGFloat(positionForValue(lowerValue))
         lowerThumbLayer.frame = CGRect(x: lowerThumbCenter - thumbWidth / 2.0, y: 0.0, width: thumbWidth, height: thumbWidth)
-        lowerThumbLayer.setNeedsLayout()
+        lowerThumbLayer.setNeedsDisplay()
         
         let upperThumbCenter = CGFloat(positionForValue(upperValue))
         upperThumbLayer.frame = CGRect(x: upperThumbCenter - thumbWidth / 2.0, y: 0.0, width: thumbWidth, height: thumbWidth);
-        upperThumbLayer.setNeedsLayout()
+        upperThumbLayer.setNeedsDisplay()
+        CATransaction.commit()
     }
     
     /**
@@ -102,6 +158,47 @@ class RangeSlider: UIControl {
     }
     
     //TODO: add track methods
+    // clamp the passed in value so it is within the specified range. Using this help function is a little easier to read than a nested min/max call.
+    func boundValue(value: Double, toLowerValue lowerValue: Double, upperValue: Double) -> Double {
+        return min(max(value, lowerValue), upperValue)
+    }
+    
+    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+        let location = touch.locationInView(self)
+        
+        // 1 Determine by how much the user has dragged
+        /**
+            First determines the number of pixels the user's finger travelled.
+        */
+        let deltaLocation = Double(location.x - previousLocation.x)
+        let deltaValue = (maximumValue - minimumValue) * deltaLocation / Double(bounds.width - bounds.height)
+        
+        previousLocation = location
+        
+        // 2 Update the values
+        /**
+            adjust the upper or lower values based on where the user drags the slider to.
+        */
+        if lowerThumbLayer.highlighted {
+            lowerValue += deltaValue
+            lowerValue = boundValue(lowerValue, toLowerValue: minimumValue, upperValue: upperValue)
+        } else if upperThumbLayer.highlighted {
+            upperValue += deltaValue
+            upperValue = boundValue(upperValue, toLowerValue: lowerValue, upperValue: maximumValue)
+        }
+        
+        
+        sendActionsForControlEvents(.ValueChanged)
+        
+        return true
+        
+    }
+    
+    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+        lowerThumbLayer.highlighted = false
+        upperThumbLayer.highlighted = false
+    }
+    
 }
 
 

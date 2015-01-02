@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CB9A7B21A56E6880049BFA2 /* RangeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB9A7B11A56E6880049BFA2 /* RangeSliderTrackLayer.swift */; };
 		C244DC681A53C732007681DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C244DC671A53C732007681DB /* AppDelegate.swift */; };
 		C244DC6A1A53C732007681DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C244DC691A53C732007681DB /* ViewController.swift */; };
 		C244DC6D1A53C732007681DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C244DC6B1A53C732007681DB /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2CB9A7B11A56E6880049BFA2 /* RangeSliderTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderTrackLayer.swift; sourceTree = "<group>"; };
 		C244DC621A53C732007681DB /* CustomSliderExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomSliderExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C244DC661A53C732007681DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C244DC671A53C732007681DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				C244DC671A53C732007681DB /* AppDelegate.swift */,
 				C244DC691A53C732007681DB /* ViewController.swift */,
 				C244DC871A53C835007681DB /* RangeSlider.swift */,
+				2CB9A7B11A56E6880049BFA2 /* RangeSliderTrackLayer.swift */,
 				C244DC891A53F258007681DB /* RangeSliderThumbLayer.swift */,
 				C244DC6B1A53C732007681DB /* Main.storyboard */,
 				C244DC6E1A53C732007681DB /* Images.xcassets */,
@@ -219,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C244DC6A1A53C732007681DB /* ViewController.swift in Sources */,
+				2CB9A7B21A56E6880049BFA2 /* RangeSliderTrackLayer.swift in Sources */,
 				C244DC881A53C835007681DB /* RangeSlider.swift in Sources */,
 				C244DC681A53C732007681DB /* AppDelegate.swift in Sources */,
 				C244DC8A1A53F258007681DB /* RangeSliderThumbLayer.swift in Sources */,
@@ -413,6 +417,7 @@
 				C244DC831A53C732007681DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C244DC841A53C732007681DB /* Build configuration list for PBXNativeTarget "CustomSliderExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +426,7 @@
 				C244DC861A53C732007681DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

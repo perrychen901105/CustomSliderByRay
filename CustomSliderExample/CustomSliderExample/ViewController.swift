@@ -15,9 +15,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        rangeSlider.backgroundColor = UIColor.redColor();
         view.addSubview(rangeSlider);
-        // Do any additional setup after loading the view, typically from a nib.
+        rangeSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
+
+        //!!!: for test
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
+        dispatch_after(time, dispatch_get_main_queue()) { () -> Void in
+            self.rangeSlider.trackHighlightTintColor = UIColor.redColor()
+            self.rangeSlider.curvaceousness = 0.0
+        }
+    }
+    
+    func rangeSliderValueChanged(rangeSlider: RangeSlider) {
+        println("Range slider value changed: (\(rangeSlider.lowerValue) \(rangeSlider.upperValue))")
     }
 
     override func viewDidLayoutSubviews() {
